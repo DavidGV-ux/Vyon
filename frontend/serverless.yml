@@ -1,0 +1,78 @@
+# Serverless Framework — VYON Mockup App (AWS Lambda aislada)
+# Stack / Service name completamente independiente del resto de tus proyectos.
+# NO reutiliza ningún rol, función, API Gateway ni bucket existente.
+
+service: vyon-mockup-stack
+frameworkVersion: '^3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  memorySize: 512
+  timeout: 30
+  stackName: vyon-mockup-stack-${self:provider.stage}
+  deploymentBucket:
+    name: vyon-mockup-deploys-${self:provider.region}-${self:provider.stage}
+    serverSideEncryption: AES256
+
+  # Variables de entorno exclusivas para esta Lambda (prefijo VYON_)
+  environment:
+    VYON_SUPABASE_URL: ${env:VYON_SUPABASE_URL, ''}
+    VYON_SUPABASE_ANON_KEY: ${env:VYON_SUPABASE_ANON_KEY, ''}
+    VYON_STAGE: ${self:provider.stage}
+
+# Empaquetado: solo el build estático + handler + server, sin node_modules dev
+package:
+  patterns:
+    - '!**/*'
+    - 'dist/**'
+    - 'server.js'
+    - 'lambda.js'
+    - 'node_modules/**'
+
+functions:
+  vyon-mockup-app:
+    name: vyon-mockup-app-${self:provider.stage}
+    handler: lambda.handler
+    description: 'VYON mockup SPA estática servida desde Lambda (aislada)'
+
+    # Rol IAM NUEVO y exclusivo (Serverless lo crea automáticamente)
+    role: VyonMockupLambdaRole
+
+    # Function URL PROPIA e independiente (auth-type NONE — protección vía Supabase Auth en FE)
+    url:
+      cors: true
+      authorizer: none
+
+    events: []   # NO usa API Gateway compartido — solo Function URL
+
+# Recursos adicionales: definimos el rol IAM EXPLÍCITAMENTE para garantizar
+# que es nuevo y exclusivo de esta función (no toca roles existentes).
+resources:
+  Resources:
+    VyonMockupLambdaRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: vyon-mockup-lambda-role-${self:provider.stage}
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        Tags:
+          - { Key: Project, Value: VYON }
+          - { Key: ManagedBy, Value: ServerlessFramework }
+          - { Key: Isolated, Value: 'true' }
+
+  Outputs:
+    VyonMockupFunctionUrl:
+      Description: 'URL pública del mockup VYON (Function URL aislado)'
+      Value:
+        Fn::GetAtt: [VyonMockupappLambdaFunctionUrl, FunctionUrl]

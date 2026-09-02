@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-vyon-dark text-white font-sans antialiased;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-vyon-dark;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-vyon-slate rounded-full hover:bg-vyon-orange/40;
+  }
+}
+
+@layer components {
+  .vyon-gradient-text {
+    @apply bg-vyon-gradient bg-clip-text text-transparent;
+  }
+  .vyon-btn-primary {
+    @apply bg-vyon-gradient text-vyon-dark font-bold py-3 px-6 rounded-xl hover:opacity-90 transition-all duration-200 shadow-vyon-glow;
+  }
+  .vyon-btn-secondary {
+    @apply bg-vyon-slate text-white font-semibold py-3 px-6 rounded-xl border border-white/10 hover:border-vyon-yellow/50 transition-all duration-200;
+  }
+  .vyon-input {
+    @apply w-full bg-vyon-slate/60 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-vyon-yellow/50 focus:ring-1 focus:ring-vyon-yellow/30 transition-all;
+  }
+  .vyon-card {
+    @apply bg-vyon-navy border border-white/5 rounded-2xl;
+  }
+  .vyon-kanban-col {
+    @apply bg-vyon-slate/40 border border-white/5 rounded-2xl p-4 min-h-[500px];
+  }
+  .vyon-task-card {
+    @apply bg-vyon-navy border border-white/10 rounded-xl p-4 hover:border-vyon-yellow/40 hover:shadow-vyon-glow transition-all duration-200 cursor-pointer;
+  }
+}
