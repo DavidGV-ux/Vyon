@@ -1,0 +1,53 @@
+{
+  "version": "1.0.0",
+  "templates": [
+    {
+      "kind": "retention",
+      "language": "es",
+      "step": null,
+      "body": "¡Hola {{name}}! Notamos que llevas {{days}} días sin entrar a VYON. Tus tareas y tu equipo te esperan: retoma donde dejaste 👉 {{link}}"
+    },
+    {
+      "kind": "retention",
+      "language": "en",
+      "step": null,
+      "body": "Hi {{name}}! We noticed it's been {{days}} days since your last visit to VYON. Your tasks and team are waiting: pick up where you left off 👉 {{link}}"
+    },
+    {
+      "kind": "reactivation",
+      "language": "es",
+      "step": 1,
+      "body": "{{name}}, tu cuenta de VYON sigue ahí con {{days}} días de inactividad. Entra y revisa tus tableros en 1 minuto 👉 {{link}}"
+    },
+    {
+      "kind": "reactivation",
+      "language": "es",
+      "step": 2,
+      "body": "{{name}}, un tip rápido: en VYON puedes automatizar recordatorios y cerrar sprints sin fricción. Actívalo hoy 👉 {{link}}"
+    },
+    {
+      "kind": "reactivation",
+      "language": "es",
+      "step": 3,
+      "body": "{{name}}, ¿listo para volver? Tu equipo ya está trabajando en VYON. Recupera tu ritmo ahora 👉 {{link}}"
+    },
+    {
+      "kind": "reactivation",
+      "language": "en",
+      "step": 1,
+      "body": "{{name}}, your VYON account is still there with {{days}} days of inactivity. Take a minute to check your boards 👉 {{link}}"
+    },
+    {
+      "kind": "reactivation",
+      "language": "en",
+      "step": 2,
+      "body": "{{name}}, quick tip: VYON automates reminders and closes sprints without friction. Turn it on today 👉 {{link}}"
+    },
+    {
+      "kind": "reactivation",
+      "language": "en",
+      "step": 3,
+      "body": "{{name}}, ready to come back? Your team is already working in VYON. Get back in rhythm now 👉 {{link}}"
+    }
+  ]
+}

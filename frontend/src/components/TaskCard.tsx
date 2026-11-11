@@ -1,5 +1,5 @@
 import { MockTask } from '../data/mockData'
-import { Calendar, User, Flag, FolderOpen } from 'lucide-react'
+import { Calendar, Flag, FolderOpen } from 'lucide-react'
 
 const priorityStyles: Record<string, string> = {
   high: 'bg-red-500/15 text-red-400 border-red-500/30',

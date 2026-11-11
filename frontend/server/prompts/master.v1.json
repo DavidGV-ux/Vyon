@@ -1,0 +1,62 @@
+{
+  "version": "1.0.0",
+  "templates": [
+    {
+      "outputKind": "finanzas",
+      "calibrationThreshold": 0.7,
+      "systemPrompt": "You are VYON's Master Multimodal Prompt — Finance extractor.\nYour job: read the provided content (text, image, audio transcript) and return a single JSON object matching this schema exactly:\n{{SCHEMA}}\nRules:\n- Output ONLY valid JSON. No markdown, no commentary.\n- Currency defaults to USD if unspecified.\n- Each entry must have description, amount (number), type (income|expense), category, date (YYYY-MM-DD), paymentMethod (string or null), confidence (0-1).\n- Compute totals from entries; net = income - expense.\n- Language of free-text fields: {{LANGUAGE}}.\n- Strictness: {{STRICTNESS}}.\n- Extra context: {{CONTEXT}}.",
+      "userPromptTemplate": "Extract all financial transactions from the following input:\n\n{{INPUT}}",
+      "schema": {
+        "currency": "string",
+        "entries": [
+          {
+            "description": "string",
+            "amount": "number",
+            "type": "income | expense",
+            "category": "string",
+            "date": "YYYY-MM-DD",
+            "paymentMethod": "string | null",
+            "confidence": "number 0-1"
+          }
+        ],
+        "totals": { "income": "number", "expense": "number", "net": "number" }
+      }
+    },
+    {
+      "outputKind": "tareas",
+      "calibrationThreshold": 0.7,
+      "systemPrompt": "You are VYON's Master Multimodal Prompt — Task extractor.\nYour job: read the provided content and return a single JSON object matching this schema exactly:\n{{SCHEMA}}\nRules:\n- Output ONLY valid JSON. No markdown, no commentary.\n- Each task must have title, description, priority (low|medium|high), status (todo|in_progress|done), dueDate (YYYY-MM-DD or null), assignee (string or null), project (string or null), tags (string[]), estimatedHours (number or null).\n- Language of free-text fields: {{LANGUAGE}}.\n- Strictness: {{STRICTNESS}}.\n- Extra context: {{CONTEXT}}.",
+      "userPromptTemplate": "Extract actionable tasks from the following input:\n\n{{INPUT}}",
+      "schema": {
+        "tasks": [
+          {
+            "title": "string",
+            "description": "string",
+            "priority": "low | medium | high",
+            "status": "todo | in_progress | done",
+            "dueDate": "YYYY-MM-DD | null",
+            "assignee": "string | null",
+            "project": "string | null",
+            "tags": ["string"],
+            "estimatedHours": "number | null"
+          }
+        ]
+      }
+    },
+    {
+      "outputKind": "resumenes",
+      "calibrationThreshold": 0.7,
+      "systemPrompt": "You are VYON's Master Multimodal Prompt — Summarizer.\nYour job: read the provided content and return a single JSON object matching this schema exactly:\n{{SCHEMA}}\nRules:\n- Output ONLY valid JSON. No markdown, no commentary.\n- summary should be concise but complete.\n- keyPoints: 3-7 bullet-style strings.\n- actionItems: concrete next steps.\n- sentiment: positive | neutral | negative.\n- Language of free-text fields: {{LANGUAGE}}.\n- Strictness: {{STRICTNESS}}.\n- Extra context: {{CONTEXT}}.",
+      "userPromptTemplate": "Summarize the following input:\n\n{{INPUT}}",
+      "schema": {
+        "title": "string",
+        "summary": "string",
+        "keyPoints": ["string"],
+        "actionItems": ["string"],
+        "sentiment": "positive | neutral | negative",
+        "entities": ["string"],
+        "topics": ["string"]
+      }
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
 import TaskCard from '../components/TaskCard'
 import { mockTasks, mockProjects, MockTask } from '../data/mockData'
+import { useBilling } from '../context/BillingContext'
 import {
   Plus,
   Filter,
@@ -32,6 +33,17 @@ const columns: ColumnDef[] = [
 
 export default function Dashboard() {
   const [activeProject, setActiveProject] = useState<string>('todos')
+  const { can, openPaywall } = useBilling()
+
+  const handleNewTask = () => {
+    // Paywall automatizado (MECL-041): sin plan Pro se bloquea la acción
+    if (!can('unlimited_projects')) {
+      openPaywall('unlimited_projects')
+      return
+    }
+    // Con plan Pro habilitado: crear tarea (demo)
+    window.alert('Nueva tarea — disponible con tu plan Pro ✅')
+  }
 
   const filteredTasks = useMemo(() => {
     if (activeProject === 'todos') return mockTasks
@@ -96,7 +108,10 @@ export default function Dashboard() {
               <Filter className="w-4 h-4" />
               Filtros
             </button>
-            <button className="vyon-btn-primary py-2.5 px-5 flex items-center gap-2 text-sm">
+            <button
+              onClick={handleNewTask}
+              className="vyon-btn-primary py-2.5 px-5 flex items-center gap-2 text-sm"
+            >
               <Plus className="w-4 h-4" />
               Nueva tarea
             </button>

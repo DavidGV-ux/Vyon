@@ -16,7 +16,10 @@ try {
   }
   url = process.env.VITE_SUPABASE_URL || m.get('VITE_SUPABASE_URL')
   key = process.env.VITE_SUPABASE_ANON_KEY || m.get('VITE_SUPABASE_ANON_KEY')
-} catch {}
+} catch (e) {
+  // ignore
+  void e
+}
 
 console.log('=== VARS DE .env ===')
 console.log('VITE_SUPABASE_URL     :', url || '❌ VACÍO')
@@ -63,7 +66,7 @@ if (e2) {
   }
   console.log('')
   console.log('▶️  (ALT) Probamos consulta anónima para comprobar conexión:')
-  const { data: ping, error: pe } = await sb.from('profiles').select('count', { count: 'exact', head: true })
+  const { error: pe } = await sb.from('profiles').select('count', { count: 'exact', head: true })
   if (pe) console.log('   ❌ ping profiles error:', pe.message)
   else console.log('   ✅ Conexión BD OK — tabla profiles accesible (RLS aplicado)')
   process.exit(0)
@@ -85,7 +88,7 @@ console.log('')
 
 console.log('▶️  (4) SELECT public.workspaces / projects / tasks (deberían estar vacíos pero accesibles)')
 for (const t of ['workspaces','projects','tasks']) {
-  const { data, error } = await sb.from(t).select('count', { count: 'exact', head: true })
+  const { error } = await sb.from(t).select('count', { count: 'exact', head: true })
   if (error) console.log(`   ❌ ${t}:`, error.message)
   else console.log(`   ✅ ${t}: tabla accesible`)
 }

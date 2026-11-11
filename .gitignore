@@ -1,0 +1,19 @@
+# Dependencias y build
+node_modules/
+dist/
+coverage/
+
+# Secretos y variables de entorno
+.env
+.env.*
+!.env.example
+
+# Artefactos de despliegue y logs
+*.log
+.DS_Store
+.serverless/
+serverless-state.json
+frontend/deploy-error.log
+
+# Respaldos locales (MECL-057)
+backups/

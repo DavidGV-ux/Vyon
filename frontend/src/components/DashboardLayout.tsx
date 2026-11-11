@@ -6,6 +6,7 @@ import {
   LayoutGrid,
   FolderKanban,
   CheckSquare,
+  Sparkles,
   Settings,
   ChevronDown,
   Plus,
@@ -13,6 +14,7 @@ import {
   Bell,
   Search,
   User as UserIcon,
+  CreditCard,
 } from 'lucide-react'
 import { mockWorkspaces, mockProjects } from '../data/mockData'
 
@@ -22,6 +24,8 @@ const navItems = [
   { to: '/dashboard', label: 'Espacios', icon: LayoutGrid, end: true },
   { to: '/dashboard/projects', label: 'Proyectos', icon: FolderKanban, end: false },
   { to: '/dashboard/tasks', label: 'Tareas', icon: CheckSquare, end: false },
+  { to: '/dashboard/assistant', label: 'Asistente IA', icon: Sparkles, end: false },
+  { to: '/dashboard/billing', label: 'Facturación', icon: CreditCard, end: false },
   { to: '/dashboard/settings', label: 'Configuración', icon: Settings, end: false },
 ]
 

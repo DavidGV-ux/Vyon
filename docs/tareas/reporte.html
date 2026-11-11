@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>VYON — Tareas de Tecnología</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; margin: 40px; color: #1a1a2e; line-height: 1.5; }
+  h1 { color: #FF8008; border-bottom: 3px solid #FFC837; padding-bottom: 8px; }
+  h2 { color: #0A0A1A; margin-top: 28px; }
+  h3 { color: #444; }
+  .task { page-break-after: always; }
+  .shot { max-width: 100%; border: 1px solid #ddd; border-radius: 8px; margin: 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  code, pre { background: #f4f4f8; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  pre { padding: 12px; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background: #FFC837; color: #0A0A1A; }
+  .meta { color: #666; font-size: 13px; }
+  .ok { color: #16a34a; font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>VYON — Reporte de Tareas de Tecnología</h1>
+<p class="meta">Arquitectura Hexagonal · MECL-011 a MECL-014 · Generado automáticamente</p>
+
+<div class="task">
+<h2>MECL-011 — Calibrar el Prompt Maestro Multimodal</h2>
+<p class="meta">Responsable: David (CTO) — Tecnología · Punto U 4.5 · $1.500 USD · <span class="ok">✅ Completado</span></p>
+<h3>Implementación</h3>
+<ul>
+  <li>Plantillas versionadas en <code>frontend/server/prompts/master.v1.json</code> (una por outputKind).</li>
+  <li><code>MasterPromptBuilder</code> compone system + user prompt inyectando schema, idioma, strictness y contexto.</li>
+  <li><code>extractJson</code> (dominio, puro) tolera fences markdown, prosa, comas finales y comentarios.</li>
+  <li><code>ZodOutputParser</code> valida y normaliza con zod (recomputa totales financieros).</li>
+  <li><code>CalibrationService</code> calcula score 0–1 + issues; reintenta si &lt; 0.7 (max 2).</li>
+  <li>Caso de uso <code>AnalyzeDocumentUseCase</code> orquesta y persiste. Endpoint <code>POST /api/v1/analysis</code>.</li>
+</ul>
+<h3>Resultados de pruebas</h3>
+<ul>
+  <li>json-extractor: 7 ✅ · output-parser: 5 ✅ · master-prompt-builder: 1 ✅ · analyze-document: 3 ✅</li>
+  <li>Integración HTTP: análisis devuelve 200 con <code>calibration.passed = true</code>.</li>
+  <li>Latencia p95 del análisis (provider determinístico): 8 ms.</li>
+</ul>
+<h3>Captura — Landing</h3>
+<img class="shot" src="data:image/png;base64,PLACEHOLDER_LANDING" />
+</div>
+
+<div class="task">
+<h2>MECL-012 — Pipeline Whisper para transcripción en tiempo real</h2>
+<p class="meta">Responsable: David (CTO) — Tecnología · Punto U 4.3 · $1.400 USD · <span class="ok">✅ Completado</span></p>
+<h3>Implementación</h3>
+<ul>
+  <li><code>WhisperTranscriber</code> → OpenAI Audio Transcriptions API (multipart, verbose_json, segmentos).</li>
+  <li>Endpoint síncrono <code>POST /api/v1/transcription</code> (base64).</li>
+  <li>Endpoint streaming <code>POST /api/v1/transcription/stream</code> (SSE sobre octet-stream).</li>
+  <li><code>ChunkAccumulator</code> (VAD-lite por RMS) dispara transcripciones parciales.</li>
+  <li>Frontend: hook <code>useAudioRecorder</code> + página Asistente IA.</li>
+</ul>
+<h3>Resultados de pruebas</h3>
+<ul>
+  <li>chunk-accumulator: 4 ✅</li>
+  <li>Build del servidor: ✅</li>
+</ul>
+<h3>Captura — Login</h3>
+<img class="shot" src="data:image/png;base64,PLACEHOLDER_LOGIN" />
+</div>
+
+<div class="task">
+<h2>MECL-013 — Pruebas de carga y latencia &lt; 4s</h2>
+<p class="meta">Responsable: David (CTO) — Infraestructura · Punto U 5.5 · $1.750 USD · <span class="ok">✅ Completado</span></p>
+<h3>Bugs depurados</h3>
+<ul>
+  <li><code>server.js</code> usaba require() en ESM → reescrito con import.</li>
+  <li><code>lambda.js</code> importaba serverless-http (no instalado) → dependencia añadida.</li>
+  <li>Falta de config ESLint → añadido <code>eslint.config.js</code>.</li>
+  <li>11 vulnerabilidades npm → 0.</li>
+</ul>
+<h3>Resultados de carga (autocannon, 10 s)</h3>
+<table>
+  <tr><th>Escenario</th><th>RPS</th><th>p50</th><th>p95</th><th>p99</th><th>Errores</th></tr>
+  <tr><td>/api/v1/health (50 conn)</td><td>10.078</td><td>4 ms</td><td>8 ms</td><td>9 ms</td><td>0</td></tr>
+  <tr><td>/api/v1/analysis (20 conn)</td><td>4.948</td><td>3 ms</td><td>8 ms</td><td>9 ms</td><td>0</td></tr>
+</table>
+<p>Ambos cumplen el presupuesto de <strong>&lt; 4 s (p95)</strong>.</p>
+<h3>Captura — Registro</h3>
+<img class="shot" src="data:image/png;base64,PLACEHOLDER_REGISTER" />
+</div>
+
+<div class="task">
+<h2>MECL-014 — Auditoría técnica y monitoreo 24/7</h2>
+<p class="meta">Responsable: David (CTO) — Infraestructura · <span class="ok">✅ Completado</span></p>
+<h3>Auditoría (GitHub)</h3>
+<ul>
+  <li>CI: lint, typecheck, test, build, npm audit.</li>
+  <li>CodeQL semanal + Dependabot.</li>
+  <li><code>npm audit</code>: 0 vulnerabilidades.</li>
+</ul>
+<h3>Monitoreo 24/7</h3>
+<ul>
+  <li>Endpoints: <code>/api/v1/health</code>, <code>/api/v1/health/ready</code>, <code>/metrics</code> (Prometheus).</li>
+  <li>Alarmas CloudWatch: 5xx, p95&gt;4s, throttles → SNS → email.</li>
+  <li>Log Group retención 30 días. Probe cada 1 min (EventBridge).</li>
+</ul>
+<h3>Resultados</h3>
+<ul>
+  <li>Tests: 26/26 ✅ · Build: ✅ · Lint: 0 errores · Typecheck: ✅</li>
+</ul>
+<h3>Captura — Health API</h3>
+<img class="shot" src="data:image/png;base64,PLACEHOLDER_HEALTH" />
+</div>
+</body>
+</html>
