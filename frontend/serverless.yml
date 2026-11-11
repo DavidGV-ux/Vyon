@@ -22,6 +22,16 @@ provider:
     VYON_SUPABASE_URL: ${env:VYON_SUPABASE_URL, ''}
     VYON_SUPABASE_ANON_KEY: ${env:VYON_SUPABASE_ANON_KEY, ''}
     VYON_STAGE: ${self:provider.stage}
+    # Supabase (backend/admin — servicio, nunca expuesto al frontend)
+    SUPABASE_URL: ${env:SUPABASE_URL, ''}
+    SUPABASE_SERVICE_ROLE_KEY: ${env:SUPABASE_SERVICE_ROLE_KEY, ''}
+    # WhatsApp Cloud API (webhook)
+    WHATSAPP_VERIFY_TOKEN: ${env:WHATSAPP_VERIFY_TOKEN, ''}
+    WHATSAPP_APP_SECRET: ${env:WHATSAPP_APP_SECRET, ''}
+    WHATSAPP_ACCESS_TOKEN: ${env:WHATSAPP_ACCESS_TOKEN, ''}
+    WHATSAPP_PHONE_NUMBER_ID: ${env:WHATSAPP_PHONE_NUMBER_ID, ''}
+    # Prompt Maestro (MECL-025)
+    PROMPT_MAESTRO_VERSION: ${env:PROMPT_MAESTRO_VERSION, 'v1.1'}
 
 # Empaquetado: solo el build estático + handler + server, sin node_modules dev
 package:
@@ -30,6 +40,8 @@ package:
     - 'dist/**'
     - 'server.js'
     - 'lambda.js'
+    - 'supabase-admin.js'
+    - 'prompts.js'
     - 'node_modules/**'
 
 functions:

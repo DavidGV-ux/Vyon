@@ -13,6 +13,8 @@ import {
   Bell,
   Search,
   User as UserIcon,
+  BarChart3,
+  Database as DatabaseIcon,
 } from 'lucide-react'
 import { mockWorkspaces, mockProjects } from '../data/mockData'
 
@@ -22,6 +24,8 @@ const navItems = [
   { to: '/dashboard', label: 'Espacios', icon: LayoutGrid, end: true },
   { to: '/dashboard/projects', label: 'Proyectos', icon: FolderKanban, end: false },
   { to: '/dashboard/tasks', label: 'Tareas', icon: CheckSquare, end: false },
+  { to: '/analytics', label: 'Analítica', icon: BarChart3, end: false },
+  { to: '/consumption', label: 'Consumo', icon: DatabaseIcon, end: false },
   { to: '/dashboard/settings', label: 'Configuración', icon: Settings, end: false },
 ]
 

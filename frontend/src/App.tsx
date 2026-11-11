@@ -3,6 +3,8 @@ import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
+import Analytics from './pages/Analytics'
+import Consumption from './pages/Consumption'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -16,6 +18,22 @@ function App() {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/analytics"
+        element={
+          <ProtectedRoute>
+            <Analytics />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/consumption"
+        element={
+          <ProtectedRoute>
+            <Consumption />
           </ProtectedRoute>
         }
       />
